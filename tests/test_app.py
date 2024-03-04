@@ -36,6 +36,16 @@ def test_read_users(client):
     }
 
 
+def test_read_user_by_id(client):
+    response = client.get('/users/1/')
+    assert response.status_code == 200
+    assert response.json() == {
+        'username': 'alice',
+        'email': 'alice@example.com',
+        'id': 1,
+    }
+
+
 def test_update_user(client):
     response = client.put(
         '/users/1/',
@@ -58,3 +68,27 @@ def test_delete_user(client):
 
     assert response.status_code == 200
     assert response.json() == {'message': 'User deleted'}
+
+
+def test_read_user_by_id_error(client):
+    response = client.get('/users/46')
+
+    assert response.status_code == 404
+
+
+def test_update_user_error(client):
+    response = client.put(
+        '/users/46/',
+        json={
+            'username': 'bob',
+            'email': 'bob@example.com',
+            'password': 'mynewpassword',
+        },
+    )
+    assert response.status_code == 404
+
+
+def test_delete_user_error(client):
+    response = client.delete('/users/46/')
+
+    assert response.status_code == 404

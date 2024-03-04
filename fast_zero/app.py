@@ -29,8 +29,18 @@ def create_user(user: UserSchema):
 
 
 @app.get('/users/', response_model=UserList)
-def read_user():
+def read_users():
     return {'users': database}
+
+
+@app.get('/users/{user_id}/', response_model=UserPublic)
+def read_user_by_id(user_id: int):
+    if user_id > len(database) or user_id < 1:
+        raise HTTPException(status_code=404, detail='User not found')
+
+    user = database[user_id - 1]
+
+    return user
 
 
 @app.put('/users/{user_id}/', response_model=UserPublic)
