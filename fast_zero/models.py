@@ -6,7 +6,7 @@ from sqlalchemy.orm import mapped_column  # pyright: ignore
 class Base(DeclarativeBase):
     pass
 
-
+teste
 class User(Base):
     __tablename__ = 'users'
 
